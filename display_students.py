@@ -28,23 +28,11 @@ class Display_students(tk.Frame):
         self.data_frame = tk.Frame(self.canvas)
         self.canvas.create_window((0,0), window=self.data_frame, anchor=tk.NW)
 
-        try:
-            # Load the data from the Excel file
-            self.wb = openpyxl.load_workbook("data.xlsx")
-            self.ws = self.wb.active
-        except FileNotFoundError:
-            # If the file doesn't exist, create a new workbook and add the headers
-            wb = Workbook()
-            sheet = wb.active
 
-            # Add the headers
-            headers = ["Name", "Grade", "Gender", "OldSchool", "OldSchoolClass"]
-            sheet.append(headers)
-
-            # Save the workbook with the headers
-        #     wb.save("data.xlsx")
-        # self.ws = self.wb.active
-
+        self.wb = openpyxl.load_workbook("data.xlsx")
+        self.ws = self.wb.active
+   
+       
         # Create the treeview to display the data
         self.treeview = ttk.Treeview(self.data_frame, selectmode='browse')
         self.treeview.grid(row=1, column=0, padx=5, pady=5)
@@ -68,6 +56,7 @@ class Display_students(tk.Frame):
         # Display the data rows
         row_num = 1
         for row in self.ws.iter_rows(min_row=2, values_only=True):
+            print(row_num, row)
             self.treeview.insert('', 'end', text=row_num, values=row)
             row_num += 1
 
@@ -79,9 +68,13 @@ class Display_students(tk.Frame):
         print("Hi I'm in on_row_select of display_students.py")
         print(event)
         self.re_edit = True
-        self.selected_item = self.treeview.selection()[0]
-        values = self.treeview.item(self.selected_item, 'values')
-
+        self.selected_item1 = self.treeview.selection()[0]
+        print("selected_item1", self.selected_item1)
+        values = self.treeview.item(self.selected_item1, 'values')
+        text = self.treeview.item(self.selected_item1, 'text')
+        print("text row number :", text)
+        self.position= int(text)+1
+        
       
         # Fill the entry form with the selected row data
         self.inject_student_entry.name_entry.delete(0, 'end')
@@ -97,19 +90,15 @@ class Display_students(tk.Frame):
         # Display the data rows
         print("Hi I'm in refresh_student_display of display_students.py")
         self.treeview.delete(*self.treeview.get_children())
+        # opend data.xlsx
+        self.wb = openpyxl.load_workbook("data.xlsx")
+        self.ws = self.wb.active
         row_num = 1
         for row in self.ws.iter_rows(min_row=2, values_only=True):
+            print(row_num, row)
             self.treeview.insert('', 'end', text=row_num, values=row)
             row_num += 1
-
-    def replace_student(self,values):
-        selected_item = self.treeview.selection()[0]
-        print("Hi I'm in replace_student of display_students.py")
-        print(selected_item)
-        #open the workbook data.xlsx
-        wb = openpyxl.load_workbook("data.xlsx")
-        # find the row in data.xlsx that corresponds to the selected row
-        ws = wb.active
+        self.wb.save("data.xlsx")
 
 
 

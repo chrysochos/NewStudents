@@ -104,8 +104,8 @@ class StudentEntry(tk.Frame):
 
         # Create the quit button
         self.quit_button = tk.Button(self, text="Quit", command=self.master.destroy)
-        #self.quit_button.grid(row=5, column=0)
-        self.submit_button.grid(row=5, column=0, columnspan=2, pady=10)
+        self.quit_button.grid(row=5, column=0)
+        #self.submit_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 
     def get_school_options(self):
@@ -143,21 +143,24 @@ class StudentEntry(tk.Frame):
 
     def replace_row(self, row_index, new_values):
         # Get the row number from the row index
-        row_number = int(''.join(filter(str.isdigit, row_index)))
-        # Get the row based on the index (assuming 1-based index)
-        row = self.ws[row_number]
-
+        print("I'm in replace_row with row_index ",row_index)
+        # row_number = int(''.join(filter(str.isdigit, row_index)))
+        # # Get the row based on the index (assuming 1-based index)
+        row = self.ws[row_index]
+        print("row ",row)
         # Replace the values in the row with the new values
         for cell, new_value in zip(row, new_values):
+            print("cell new value ",cell, new_value)
             cell.value = new_value
 
-        # # Save the workbook
-        # save_path = "data.xlsx"
-        # self.wb.save(save_path) 
+        # Save the workbook
+        save_path = "data.xlsx"
+        self.wb.save(save_path) 
    
 
     def submit(self):
         # Add the form data to the Excel worksheet
+        print("I'm in submit")
         name = self.name_entry.get()
         grade = self.grade_entry.get()
         gender = self.gender_var.get()
@@ -168,43 +171,37 @@ class StudentEntry(tk.Frame):
         # Check if Excel file is open by another user
         while True:
             try:
-                # # open data.xlsx in the same directory as the script
-                # self.wb = openpyxl.load_workbook("data.xlsx")
-                # #self.wb.save("data.xlsx")
-                # self.ws = self.wb.active
+                # open data.xlsx in the same directory as the script
+                self.wb = openpyxl.load_workbook("data.xlsx")
+                self.ws = self.wb.active
 
                 if self.inject_display_students.re_edit == True:
                     # replace the corresponding row from the Excel file
                     print("I'm in re_edit")
-                    print(self.inject_display_students.selected_item)
-                    self.replace_row(self.inject_display_students.selected_item, new_values)
+                    # print(self.inject_display_students.position)
+                    self.replace_row(self.inject_display_students.position, new_values)
                     self.inject_display_students.re_edit = False
+                    break
                 else:
                     # append the data to the Excel file
                     self.ws.append([name, grade, gender, school, class_])
-
-
-
-
-                # self.wb.save("data.xlsx")
-                self.submit_button.config(state='normal')
-                # display the data in the GUI
-                # self.inject_display_students.display_data() # Call method to update display
-
-                break
+                    # Save the workbook
+                    self.wb.save("data.xlsx")
+                    self.submit_button.config(state='normal')
+                    break
             except PermissionError:
                 self.submit_button.config(state='disabled')
                 messagebox.showerror("Excel file is open", "Please close the Excel file and try again.")
                 time.sleep(0.1)
-             
+                            # display the data in the GUI
+        self.inject_display_students.refresh_student_display() # Call method to update display
+
         # Clear the form fields
         self.name_entry.delete(0, 'end')
         self.grade_entry.delete(0, 'end')
         self.gender_var.set(self.gender_options[0])
         self.school_var.set(self.school_options[0])
         self.class_var.set("")
-
-        self.inject_display_students.refresh_student_display() # Call method to update display
  
 
 def main():
