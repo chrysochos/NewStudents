@@ -5,7 +5,7 @@ import tkinter as tk
 # from IPython.display import display
 # from tkinter import messagebox
 import tkinter.ttk as ttk
-
+from openpyxl import Workbook
 
 class Display_students(tk.Frame):
     def __init__(self, master=None):
@@ -28,9 +28,22 @@ class Display_students(tk.Frame):
         self.data_frame = tk.Frame(self.canvas)
         self.canvas.create_window((0,0), window=self.data_frame, anchor=tk.NW)
 
-        # Load the data from the Excel file
-        self.wb = openpyxl.load_workbook("data.xlsx")
-        self.ws = self.wb.active
+        try:
+            # Load the data from the Excel file
+            self.wb = openpyxl.load_workbook("data.xlsx")
+            self.ws = self.wb.active
+        except FileNotFoundError:
+            # If the file doesn't exist, create a new workbook and add the headers
+            wb = Workbook()
+            sheet = wb.active
+
+            # Add the headers
+            headers = ["Name", "Grade", "Gender", "OldSchool", "OldSchoolClass"]
+            sheet.append(headers)
+
+            # Save the workbook with the headers
+        #     wb.save("data.xlsx")
+        # self.ws = self.wb.active
 
         # Create the treeview to display the data
         self.treeview = ttk.Treeview(self.data_frame, selectmode='browse')
