@@ -60,8 +60,5 @@ if __name__ == "__main__":
     student_entry.inject_display_students = display_students
     display_students.inject_student_entry = student_entry
     
-
-    
-
     student_entry.mainloop()
     display_students.mainloop()

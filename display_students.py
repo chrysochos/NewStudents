@@ -1,11 +1,6 @@
 import openpyxl
 import tkinter as tk
-# import pandas as pd
-# import ipywidgets as widgets
-# from IPython.display import display
-# from tkinter import messagebox
 import tkinter.ttk as ttk
-from openpyxl import Workbook
 
 class Display_students(tk.Frame):
     def __init__(self, master=None):
@@ -28,10 +23,8 @@ class Display_students(tk.Frame):
         self.data_frame = tk.Frame(self.canvas)
         self.canvas.create_window((0,0), window=self.data_frame, anchor=tk.NW)
 
-
         self.wb = openpyxl.load_workbook("data.xlsx")
         self.ws = self.wb.active
-   
        
         # Create the treeview to display the data
         self.treeview = ttk.Treeview(self.data_frame, selectmode='browse')
@@ -52,7 +45,6 @@ class Display_students(tk.Frame):
         self.treeview.heading('class', text='Class')
         self.treeview.column('class', width=75, anchor='center')
 
-
         # Display the data rows
         row_num = 1
         for row in self.ws.iter_rows(min_row=2, values_only=True):
@@ -62,6 +54,7 @@ class Display_students(tk.Frame):
 
         # Bind the double-click event to the on_row_select method
         self.treeview.bind('<Double-1>', self.on_row_select)
+
 
     def on_row_select(self, event):
         # Get the selected row
@@ -74,7 +67,6 @@ class Display_students(tk.Frame):
         text = self.treeview.item(self.selected_item1, 'text')
         print("text row number :", text)
         self.position= int(text)+1
-        
       
         # Fill the entry form with the selected row data
         self.inject_student_entry.name_entry.delete(0, 'end')
@@ -99,7 +91,6 @@ class Display_students(tk.Frame):
             self.treeview.insert('', 'end', text=row_num, values=row)
             row_num += 1
         self.wb.save("data.xlsx")
-
 
 
 def main():

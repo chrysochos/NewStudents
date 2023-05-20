@@ -105,7 +105,6 @@ class StudentEntry(tk.Frame):
         # Create the quit button
         self.quit_button = tk.Button(self, text="Quit", command=self.master.destroy)
         self.quit_button.grid(row=5, column=0)
-        #self.submit_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 
     def get_school_options(self):
@@ -138,8 +137,7 @@ class StudentEntry(tk.Frame):
         self.class_dropdown['menu'].delete(0, 'end')
         for option in class_options:
             self.class_dropdown['menu'].add_command(label=option, command=tk._setit(self.class_var, option))
-        pass
-        #print(f"Class dropdown options: {[menu.entrycget(i, 'label') for i in range(menu.index('end'))]}")
+
 
     def replace_row(self, row_index, new_values):
         # Get the row number from the row index
@@ -211,7 +209,5 @@ def main():
     # Test Object1 functionality
     student_entry.mainloop()
 
-if __name__ == "__main__":
-
-    
+if __name__ == "__main__":  
     main()
