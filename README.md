@@ -16,14 +16,15 @@ This program creates a graphical user interface (GUI) for entering student data 
 - Utilizes nested dropdown menus for selecting schools and classes.
 - Displays the newly added data in the data viewer.
 - Supports double-clicking on a row in the viewer to edit the corresponding row data in the entry form.
+- A clear button is for clearing the changes in entry form before submit.
+- A delete button is for deleting the double-clicked row.
+- Submit needs values in all the fields of the form.
 
 ## Limitations
 
 The current version of the program has the following limitations:
 
-- It does not validate the selection and validity of the school and class options.
 - It does not validate the input and validity of the name and grade fields.
-- It does not provide a feature to delete a row from the Excel file.
 - It does not support sorting the data in the viewer by any column.
 - It does not support filtering the data in the viewer by any column.
 - It does not support searching the data in the viewer by any column.

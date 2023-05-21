@@ -2,6 +2,13 @@ import openpyxl
 import tkinter as tk
 import tkinter.ttk as ttk
 
+'''
+This object creates a GUI to show the students in a scrollable viewer. 
+The user can double-click on a row with a student data and these will be put in the entry form of the StudentEntry form, 
+write the position of the row in the Excel file and change the re_edit status of StudentEntry object to True.   
+Whenever a change to data.xlsx is made, the viewer is refreshed.
+'''
+
 class Display_students(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -9,7 +16,7 @@ class Display_students(tk.Frame):
         #self.master.title("Excel Data Viewer")
         self.tree = ttk.Treeview(self.master)
         self.grid()
-        self.re_edit = False
+
 
         # Create a canvas widget with a scrollbar
         self.canvas = tk.Canvas(self, width=500, height=300)
@@ -60,7 +67,7 @@ class Display_students(tk.Frame):
         # Get the selected row
         print("Hi I'm in on_row_select of display_students.py")
         print(event)
-        self.re_edit = True
+        self.inject_student_entry.re_edit = True
         self.selected_item1 = self.treeview.selection()[0]
         print("selected_item1", self.selected_item1)
         values = self.treeview.item(self.selected_item1, 'values')
